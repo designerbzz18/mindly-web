@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07100e">
+  <meta name="description" content="Mindly te ayuda a organizar ideas, planificar tu día y avanzar hacia tus objetivos.">
+  <title>Mindly — Tu mente, más productiva</title>
+  <style>
+    :root {
+      --bg:#07100e; --panel:#0b1714; --panel2:#10211b; --line:#203a30;
+      --green:#52f2ad; --green2:#20c982; --white:#f4fbf7; --muted:#a8bdb3;
+      --radius:22px; --max:1160px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:88px}
+    body{margin:0;background:radial-gradient(ellipse at 78% 9%,rgba(24,173,104,.18),transparent 34%),var(--bg);color:var(--white);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6}
+    a{color:inherit;text-decoration:none}
+    button,input{font:inherit}
+    button,a{ -webkit-tap-highlight-color:transparent }
+    .wrap{width:min(var(--max),calc(100% - 40px));margin:auto}
+    .nav{position:sticky;top:0;z-index:20;background:rgba(7,16,14,.86);backdrop-filter:blur(16px);border-bottom:1px solid rgba(91,147,119,.15)}
+    .navin{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .brand{display:flex;align-items:center;gap:10px;font-size:1.45rem;font-weight:850;letter-spacing:-.05em}
+    .bolt{display:grid;place-items:center;width:34px;height:34px;color:#06130d;background:var(--green);border-radius:11px;font-size:1.25rem;transform:skew(-7deg)}
+    .links{display:flex;align-items:center;gap:28px;color:#c4d4cc;font-size:.92rem}
+    .links a:hover{color:var(--green)}
+    .actions{display:flex;align-items:center;gap:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:12px 18px;border:1px solid transparent;border-radius:999px;font-weight:750;font-size:.92rem;cursor:pointer;transition:transform .18s,background .18s,border-color .18s}
+    .btn:hover{transform:translateY(-2px)}
+    .primary{background:var(--green);color:#06140d;box-shadow:0 8px 32px rgba(82,242,173,.13)}
+    .primary:hover{background:#7af8bf}
+    .outline{border-color:#385449;background:rgba(255,255,255,.02);color:var(--white)}
+    .outline:hover{border-color:var(--green)}
+    .menu{display:none}
+    .hero{padding:80px 0 66px;overflow:hidden}
+    .heroGrid{display:grid;grid-template-columns:1.02fr .98fr;align-items:center;gap:54px}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--green);font-size:.78rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
+    .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 14px var(--green)}
+    h1{font-size:clamp(2.8rem,6vw,5.2rem);line-height:.99;letter-spacing:-.07em;margin:20px 0 24px;max-width:680px}
+    h1 span,.accent{color:var(--green)}
+    .lead{max-width:570px;color:#b9ccc2;font-size:1.08rem;line-height:1.8}
+    .checks{display:flex;flex-wrap:wrap;gap:12px 20px;margin:26px 0 30px;color:#d5e4dc;font-size:.92rem}
+    .checks span:before{content:"✓";display:inline-grid;place-items:center;width:20px;height:20px;border:1px solid #278c62;color:var(--green);border-radius:50%;margin-right:8px;font-weight:800}
+    .heroBtns{display:flex;flex-wrap:wrap;gap:12px}
+    .tiny{font-size:.78rem;color:#8fa59a;margin-top:13px}
+    .visual{position:relative;min-height:480px;display:grid;place-items:center}
+    .glow{position:absolute;width:85%;aspect-ratio:1;border-radius:50%;background:#16b96c;filter:blur(100px);opacity:.13}
+    .phone{position:relative;width:min(320px,78%);padding:12px;border:1px solid #537568;border-radius:42px;background:linear-gradient(145deg,#20332d,#050b09 48%);box-shadow:0 28px 90px #000b,0 0 0 5px #101d18;transform:rotate(-4deg)}
+    .screen{background:#091410;border-radius:31px;padding:22px 15px 17px;min-height:420px;border:1px solid #1e392c}
+    .phoneTop{display:flex;align-items:center;justify-content:space-between;font-weight:800;margin-bottom:22px}
+    .phoneTop small{font-weight:500;color:#8ea79a}
+    .greeting{font-size:1.15rem;font-weight:800;line-height:1.25}
+    .sub{color:#91a79b;font-size:.76rem;margin:5px 0 18px}
+    .taskBox{padding:14px;background:#11231b;border:1px solid #1f4532;border-radius:16px;margin-bottom:12px}
+    .taskHead{display:flex;justify-content:space-between;gap:8px;font-weight:750;font-size:.85rem}
+    .bar{height:6px;background:#263d31;border-radius:8px;margin:12px 0 15px;overflow:hidden}
+    .bar span{display:block;height:100%;width:65%;background:var(--green);border-radius:8px}
+    .task{display:flex;gap:9px;align-items:center;color:#bfd1c5;font-size:.76rem;margin:11px 0}
+    .tick{width:15px;height:15px;border:1px solid #42d999;border-radius:5px;display:inline-grid;place-items:center;color:var(--green);font-size:.65rem;flex-shrink:0}
+    .goal{display:flex;gap:12px;align-items:center}
+    .goalIcon{width:38px;height:38px;display:grid;place-items:center;background:#153a29;color:var(--green);border-radius:12px;font-size:1.2rem}
+    .goal strong{font-size:.82rem;display:block}.goal small{color:#94ab9e;font-size:.7rem}
+    .float{position:absolute;background:rgba(9,24,18,.9);border:1px solid #28533e;border-radius:17px;padding:16px 18px;box-shadow:0 18px 50px #0006;backdrop-filter:blur(12px)}
+    .float strong{display:block;font-size:.91rem}.float small{display:block;color:#a9c0b3;font-size:.76rem;max-width:145px;margin-top:4px}
+    .floatIcon{color:var(--green);font-size:1.25rem;margin-bottom:5px}
+    .f1{top:54px;right:-4px}.f2{bottom:56px;left:-4px}
+    .section{padding:76px 0;border-top:1px solid rgba(110,157,128,.15)}
+    .sectionHead{max-width:670px;margin-bottom:34px}
+    .section h2{font-size:clamp(2rem,4vw,3.2rem);letter-spacing:-.055em;line-height:1.08;margin:13px 0}
+    .sectionHead p{color:var(--muted);margin:0}
+    .featureGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+    .feature,.step,.priceCard,.faq details{background:linear-gradient(145deg,rgba(17,36,27,.86),rgba(8,19,15,.9));border:1px solid var(--line);border-radius:var(--radius)}
+    .feature{padding:23px}
+    .icon{width:45px;height:45px;border-radius:14px;background:#123d29;color:var(--green);display:grid;place-items:center;font-size:1.35rem;margin-bottom:18px}
+    h3{margin:0 0 8px;font-size:1.05rem}
+    .feature p,.step p{color:var(--muted);font-size:.9rem;margin:0}
+    .howGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .step{padding:25px}
+    .num{width:42px;height:42px;display:grid;place-items:center;border:1px solid #278d60;color:var(--green);border-radius:50%;font-weight:850;margin-bottom:19px}
+    .step h3{font-size:1.13rem}
+    .quote{margin-top:26px;padding:25px 28px;border-radius:var(--radius);border:1px solid #234331;background:linear-gradient(100deg,#102b1d,#0a1711);display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .quote p{margin:0;color:#d6e8dc;font-size:1.03rem}.quote strong{color:var(--green)}
+    .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .priceCard{padding:25px;position:relative}
+    .priceCard.popular{border-color:#3fdc97;box-shadow:0 0 0 1px rgba(63,220,151,.12)}
+    .tag{position:absolute;top:17px;right:17px;color:#07140d;background:var(--green);border-radius:999px;padding:4px 9px;font-size:.68rem;font-weight:850}
+    .price{font-size:2.25rem;font-weight:850;letter-spacing:-.06em;margin:14px 0 0}.price small{font-size:.82rem;color:var(--muted);font-weight:500;letter-spacing:0}
+    .priceDesc{font-size:.86rem;color:var(--muted);min-height:44px}
+    .priceCard ul{list-style:none;padding:0;margin:20px 0 24px;color:#c9dacf;font-size:.9rem}
+    .priceCard li{margin:10px 0}.priceCard li:before{content:"✓";color:var(--green);font-weight:900;margin-right:9px}
+    .priceCard .btn{width:100%}
+    .note{font-size:.78rem;color:#82988c;margin-top:16px}
+    .faq{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .faq details{padding:18px 20px}
+    .faq summary{cursor:pointer;font-weight:750;list-style:none;display:flex;justify-content:space-between;gap:14px}
+    .faq summary:after{content:"+";color:var(--green);font-size:1.3rem;line-height:1}
+    .faq details[open] summary:after{content:"−"}
+    .faq details p{color:var(--muted);font-size:.9rem;margin:13px 0 0}
+    .cta{padding:55px 25px;text-align:center;border:1px solid #27563d;border-radius:30px;background:radial-gradient(ellipse at 50% 0%,rgba(54,232,144,.16),transparent 65%),#0b1a12}
+    .cta h2{margin-top:0}
+    .cta p{color:var(--muted);max-width:560px;margin:0 auto 24px}
+    footer{border-top:1px solid rgba(110,157,128,.15);padding:27px 0;color:#91a79a;font-size:.83rem}
+    .footin{display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .footlinks{display:flex;gap:18px;flex-wrap:wrap}
+    .footlinks a:hover{color:var(--green)}
+    .toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,20px);background:#dfffee;color:#062014;padding:12px 18px;border-radius:12px;font-weight:750;box-shadow:0 12px 40px #0008;opacity:0;pointer-events:none;transition:.25s;z-index:50;max-width:calc(100% - 30px);text-align:center}
+    .toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(max-width:900px){.heroGrid{grid-template-columns:1fr;gap:15px}.hero{padding-top:55px}.heroCopy{text-align:center}.heroCopy .lead{margin-inline:auto}.checks,.heroBtns{justify-content:center}.visual{min-height:465px}.featureGrid{grid-template-columns:repeat(2,1fr)}.f1{right:5%}.f2{left:5%}.links{gap:16px}}
+    @media(max-width:650px){.wrap{width:min(100% - 28px,var(--max))}.navin{height:66px}.links{display:none;position:absolute;top:66px;left:0;right:0;padding:18px 22px 22px;background:#08120f;border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;gap:13px}.links.open{display:flex}.actions .outline{display:none}.actions .btn{padding:10px 13px;font-size:.82rem}.menu{display:inline-flex;background:transparent;color:var(--white);border:1px solid var(--line);border-radius:12px;padding:9px 11px}.hero{padding:48px 0 42px}h1{font-size:clamp(2.65rem,13vw,4rem)}.lead{font-size:1rem}.visual{min-height:420px}.phone{width:min(285px,75%)}.screen{min-height:385px;padding:18px 13px}.f1{top:24px;right:0}.f2{bottom:24px;left:0}.float{padding:12px}.float small{max-width:120px}.section{padding:55px 0}.featureGrid,.howGrid,.pricing,.faq{grid-template-columns:1fr}.feature{padding:21px}.quote{align-items:flex-start;flex-direction:column}.priceDesc{min-height:0}.footin{align-items:flex-start;flex-direction:column}.section h2{font-size:2.35rem}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap navin">
+      <a class="brand" href="#inicio" aria-label="Mindly, inicio"><span class="bolt">ϟ</span> Mindly</a>
+      <nav class="links" id="navLinks" aria-label="Navegación principal">
+        <a href="#inicio">Inicio</a><a href="#funciones">Funciones</a><a href="#como-funciona">Cómo funciona</a><a href="#precios">Precios</a><a href="#faq">FAQ</a>
+      </nav>
+      <div class="actions">
+        <a class="btn outline" href="#funciones">Ver funciones</a>
+        <a class="btn primary" href="#empezar">Únete ahora <span aria-hidden="true">↗</span></a>
+        <button class="menu" id="menuBtn" aria-label="Abrir menú" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="wrap heroGrid">
+        <div class="heroCopy">
+          <div class="eyebrow"><span class="dot"></span> Menos caos. Más claridad.</div>
+          <h1>Tu mente,<br><span>más productiva.</span></h1>
+          <p class="lead">Mindly es el concepto de una app de productividad que te ayuda a organizar tus ideas, planificar tu día y avanzar hacia tus objetivos, todo en un solo lugar.</p>
+          <div class="checks"><span>Planificación inteligente</span><span>Ideas en orden</span><span>Objetivos claros</span><span>Rutinas sencillas</span></div>
+          <div class="heroBtns"><a class="btn primary" href="#empezar">Empieza gratis <span>→</span></a><a class="btn outline" href="#como-funciona">Descubre cómo funciona</a></div>
+          <p class="tiny">Una idea para organizar mejor tus días. Sin presión, paso a paso.</p>
+        </div>
+        <div class="visual" aria-label="Vista previa conceptual de la aplicación Mindly">
+          <div class="glow"></div>
+          <div class="phone">
+            <div class="screen">
+              <div class="phoneTop"><span><span class="accent">ϟ</span> Mindly</span><small>HOY · 09:41</small></div>
+              <div class="greeting">¡Hola! 👋<br>Vamos a por el día.</div>
+              <div class="sub">Un paso cada vez también es avanzar.</div>
+              <div class="taskBox">
+                <div class="taskHead"><span>Tu plan de hoy</span><span class="accent" id="taskCount">2/4</span></div>
+                <div class="bar"><span id="progressBar"></span></div>
+                <label class="task"><input type="checkbox" class="taskCheck" checked> Repasar tus prioridades</label>
+                <label class="task"><input type="checkbox" class="taskCheck" checked> Organizar tus ideas</label>
+                <label class="task"><input type="checkbox" class="taskCheck"> Dar el primer paso</label>
+                <label class="task"><input type="checkbox" class="taskCheck"> Tomarte un descanso</label>
+              </div>
+              <div class="taskBox goal">
+                <div class="goalIcon">◎</div><div><strong>Tu objetivo</strong><small>Avanzar un poco cada día</small></div>
+              </div>
+            </div>
+          </div>
+          <div class="float f1"><div class="floatIcon">✦</div><strong>Ideas claras</strong><small>Convierte pensamientos en próximos pasos.</small></div>
+          <div class="float f2"><div class="floatIcon">▦</div><strong>Planificación</strong><small>Una rutina que se adapta a ti.</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="funciones">
+      <div class="wrap">
+        <div class="sectionHead"><div class="eyebrow">Todo en un mismo lugar</div><h2>Tu día, con menos ruido<br>y <span class="accent">más intención.</span></h2><p>Una experiencia sencilla para pasar de “tengo mil cosas” a saber cuál es el siguiente paso.</p></div>
+        <div class="featureGrid">
+          <article class="feature"><div class="icon">✦</div><h3>Ideas ordenadas</h3><p>Guarda pensamientos, proyectos y notas sin perderlos entre aplicaciones.</p></article>
+          <article class="feature"><div class="icon">▦</div><h3>Plan diario</h3><p>Divide tus objetivos en tareas pequeñas y más fáciles de empezar.</p></article>
+          <article class="feature"><div class="icon">◎</div><h3>Seguimiento</h3><p>Visualiza tus avances y reconoce el progreso que haces cada día.</p></article>
+          <article class="feature"><div class="icon">☼</div><h3>Equilibrio</h3><p>Deja espacio para descansar. Ser productivo no significa estar ocupado siempre.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="como-funciona">
+      <div class="wrap">
+        <div class="sectionHead"><div class="eyebrow">Fácil desde el primer día</div><h2>Empieza pequeño.<br><span class="accent">Avanza a tu manera.</span></h2><p>Un flujo simple para convertir tus ideas en acciones concretas.</p></div>
+        <div class="howGrid">
+          <article class="step"><div class="num">01</div><h3>Define tu prioridad</h3><p>Piensa qué es lo más importante para ti hoy. No hace falta resolverlo todo de golpe.</p></article>
+          <article class="step"><div class="num">02</div><h3>Divide en pasos</h3><p>Transforma una meta grande en acciones pequeñas, claras y realistas.</p></article>
+          <article class="step"><div class="num">03</div><h3>Revisa tu progreso</h3><p>Marca lo que completas, ajusta el plan y vuelve a intentarlo mañana.</p></article>
+        </div>
+        <div class="quote"><p>“No necesitas hacerlo todo hoy.<br><strong>Solo necesitas saber cuál es tu siguiente paso.</strong>”</p><a class="btn outline" href="#empezar">Quiero probarlo →</a></div>
+      </div>
+    </section>
+
+    <section class="section" id="precios">
+      <div class="wrap">
+        <div class="sectionHead"><div class="eyebrow">Planes de ejemplo</div><h2>Un comienzo sencillo.<br><span class="accent">Crece cuando quieras.</span></h2><p>Estos precios son una propuesta de demostración para la web. No hay suscripciones ni pagos activados.</p></div>
+        <div class="pricing">
+          <article class="priceCard"><h3>Gratis</h3><p class="price">0 €</p><p class="priceDesc">Para empezar a organizarte.</p><ul><li>Plan diario básico</li><li>Lista de tareas</li><li>Ideas y notas</li></ul><a class="btn outline" href="#empezar">Elegir gratis</a></article>
+          <article class="priceCard popular"><span class="tag">POPULAR</span><h3>Mindly Plus</h3><p class="price">4,99 € <small>/ mes</small></p><p class="priceDesc">Una idea de plan para usuarios avanzados.</p><ul><li>Todo lo del plan Gratis</li><li>Más opciones de organización</li><li>Seguimiento de objetivos</li></ul><a class="btn primary" href="#empezar">Me interesa</a></article>
+          <article class="priceCard"><h3>Mindly Pro</h3><p class="price">9,99 € <small>/ mes</small></p><p class="priceDesc">Una propuesta para equipos y proyectos.</p><ul><li>Todo lo de Plus</li><li>Espacios para proyectos</li><li>Herramientas de equipo (idea)</li></ul><a class="btn outline" href="#empezar">Ver opción Pro</a></article>
+        </div>
+        <p class="note">Aviso: Mindly es aquí una maqueta demostrativa. Las funciones de IA, cuentas, sincronización y cobros no están implementadas. No se procesan pagos.</p>
+      </div>
+    </section>
+
+    <section class="section faq" id="faq">
+      <div class="wrap">
+        <div class="sectionHead"><div class="eyebrow">Preguntas frecuentes</div><h2>¿Tienes dudas?</h2><p>Respuestas rápidas sobre esta demo de Mindly.</p></div>
+        <div class="faq">
+          <details><summary>¿Mindly ya es una app real?</summary><p>Esta página es una demostración visual de una posible app. Para convertirla en producto real habría que desarrollar las funciones, el backend y las políticas de privacidad.</p></details>
+          <details><summary>¿La inteligencia artificial funciona?</summary><p>No en esta versión. El diseño está preparado para explicar la idea, pero no envía datos a un modelo de IA.</p></details>
+          <details><summary>¿Tengo que pagar algo?</summary><p>No. Los precios que aparecen son ejemplos visuales y no hay pagos activados en esta web.</p></details>
+          <details><summary>¿Puedo verla desde el móvil?</summary><p>Sí. El diseño se adapta a pantallas pequeñas y el menú se transforma para facilitar la navegación.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="empezar">
+      <div class="wrap"><div class="cta"><div class="eyebrow">Tu siguiente paso empieza aquí</div><h2>Haz espacio para lo importante.</h2><p>Prueba la demo, marca tus tareas y descubre cómo podría sentirse un día más organizado.</p><button class="btn primary" id="demoBtn">Probar la demo gratis →</button><p class="tiny">Demo interactiva · No requiere cuenta · No se guardan tus datos</p></div></div>
+    </section>
+  </main>
+
+  <footer><div class="wrap footin"><a class="brand" href="#inicio"><span class="bolt">ϟ</span> Mindly</a><span>Ideas. Planes. Progreso.</span><div class="footlinks"><a href="#funciones">Funciones</a><a href="#precios">Precios</a><a href="#faq">FAQ</a><a href="#inicio">Volver arriba ↑</a></div></div><div class="wrap"><p class="note">Proyecto conceptual de demostración. Mindly no ofrece todavía un servicio comercial real.</p></div></footer>
+  <div class="toast" id="toast" role="status" aria-live="polite">¡Bien! Has dado el primer paso. ✨</div>
+
+  <script>
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    menuBtn.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', String(open));
+      menuBtn.textContent = open ? '✕' : '☰';
+    });
+    navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      menuBtn.textContent = '☰';
+    }));
+    const checks = [...document.querySelectorAll('.taskCheck')];
+    function updateProgress() {
+      const done = checks.filter(c => c.checked).length;
+      document.getElementById('taskCount').textContent = `${done}/${checks.length}`;
+      document.getElementById('progressBar').style.width = `${done / checks.length * 100}%`;
+    }
+    checks.forEach(c => c.addEventListener('change', updateProgress));
+    const toast = document.getElementById('toast');
+    document.getElementById('demoBtn').addEventListener('click', () => {
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2800);
+      document.querySelector('.phone').scrollIntoView({behavior:'smooth', block:'center'});
+    });
+  </script>
+</body>
+</html>
